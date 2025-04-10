@@ -1,5 +1,4 @@
-require("dotenv").config();
-
 module.exports = {
-  PORT: process.env.PORT,
-};
+  serverConfig : require('./server-config.js'),
+  winstonLogger: require("./logger-config.js")
+}

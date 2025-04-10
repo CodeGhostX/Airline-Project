@@ -1,8 +1,7 @@
 const express = require("express");
+const { infoController } = require("../../controllers");
 const router = express.Router();
 
-router.use("/info", (req, res)=>{
-  res.json({msg: "ok"})
-});
+router.use("/info", infoController.info);
 
 module.exports = router;
