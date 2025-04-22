@@ -1,4 +1,4 @@
 module.exports = {
-  serverConfig : require('./server-config.js'),
+  serverConfig : require('./env-config.js'),
   winstonLogger: require("./logger-config.js")
 }

@@ -1,4 +1,4 @@
-const { createLogger, format, transports } = require('winston');
+const { createLogger, format, transports, error } = require('winston');
 const { combine, timestamp, prettyPrint, colorize } = format;
 
 const logger = createLogger({
@@ -6,10 +6,10 @@ const logger = createLogger({
   format: combine(
     timestamp({format: "YYYY-MM-DD HH:mm:ss"}),
     prettyPrint(),
-    colorize({all: true})
   ),
   transports: [
     new transports.Console(),
+    new transports.File({ filename: 'combined.log', level: "error" }),
   ],
 });
 
