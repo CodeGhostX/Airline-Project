@@ -9,15 +9,55 @@ async function createAirplane(req, res) {
       capacity: req.body.capacity,
     });
     SuccessResponse.message = "Successfully created an airplane";
-    SuccessResponse.data = newAirplane
+    SuccessResponse.data = newAirplane;
     return res.status(StatusCodes.CREATED).json(SuccessResponse);
   } catch (error) {
     ErrorResponse.message = "Something went wrong while creating an airplane";
     ErrorResponse.error = error;
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(ErrorResponse);
+    return res.status(error.statusCode).json(ErrorResponse);
+  }
+}
+
+async function getAirplanes(_, res) {
+  try {
+    const allAirplanes = await AirplaneService.getAirplanes();
+    SuccessResponse.message = "Successfully fetched all the airplanes";
+    SuccessResponse.data = allAirplanes;
+    return res.status(StatusCodes.OK).json(SuccessResponse);
+  } catch (error) {
+    ErrorResponse.message = "Something went wrong while fetching all airplanes";
+    ErrorResponse.error = error;
+    return res.status(error.statusCode).json(ErrorResponse);
+  }
+}
+
+async function getAirplane(req, res) {
+  try {
+    const airplane = await AirplaneService.getAirplane(req.params.id);
+    SuccessResponse.message = "Successfully fetched the airplane";
+    SuccessResponse.data = airplane;
+    return res.status(StatusCodes.OK).json(SuccessResponse);
+  } catch (error) {
+    ErrorResponse.error = error;
+    return res.status(error.statusCode).json(ErrorResponse);
+  }
+}
+
+async function deleteAirplane(req, res){
+  try {
+    const result = await AirplaneService.deleteAirplane(req.params.id);
+    SuccessResponse.message = "Successfully Deleted the airplane";
+    SuccessResponse.data = result;
+    return res.status(StatusCodes.OK).json(SuccessResponse);
+  } catch (error) {
+    ErrorResponse.error = error;
+    return res.status(error.statusCode).json(ErrorResponse);
   }
 }
 
 module.exports = {
-  createAirplane
-}
+  createAirplane,
+  getAirplanes,
+  getAirplane,
+  deleteAirplane
+};

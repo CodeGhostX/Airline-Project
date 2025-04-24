@@ -1,68 +1,49 @@
-const { winstonLogger } = require("../config");
-const { logger } = winstonLogger;
+const { StatusCodes } = require("http-status-codes");
+const AppError = require("../utils/errors/app-error.js");
 
 class crudRepository {
   constructor(model) {
     this.model = model;
   }
-  async create (data) {
-    try {
-      const response = await this.model.create(data);
-      return response;
-    } catch (error) {
-      logger.error("something went wrong in the crud repo : Create", error);
-      throw error;
-    }
-  }
-  async get (data){
-    try {
-      const response = await this.model.findByPk({
-        where: {
-          id: data
-        }
-      });
-      return response;
-    } catch (error) {
-      logger.error("something went wrong in the crud repo : get");
-      throw error;
-    }
-  }
-  async getAll (){
-    try {
-      const response = await this.model.findAll();
-      return response;
-    } catch (error) {
-      logger.error("something went wrong in the crud repo : get all");
-      throw error;
-    }
+  async create(data) {
+    const response = await this.model.create(data);
+    return response;
   }
 
-  async destroy (data){
-    try {
-      const response = await this.model.destroy({
-        where: {
-          id: data
-        }
-      });
-      return response;
-    } catch (error) {
-      logger.error("something went wrong in the crud repo : Delete");
-      throw error;
+  async get(data) {
+    const response = await this.model.findByPk(data);
+    if(!response){
+      throw new AppError("Not able to found the resource", StatusCodes.NOT_FOUND);
     }
+    return response;
   }
-  async update (id, data){
-    try {
-      const response = await this.model.destroy({
-        data,
-        where: {
-          id: id
-        }
-      });
-      return response;
-    } catch (error) {
-      logger.error("something went wrong in the crud repo : Update");
-      throw error;
+
+  async getAll() {
+    const response = await this.model.findAll();
+    return response;
+  }
+
+  async destroy(data) {
+    console.log("Data : ", data);
+    const response = await this.model.destroy({
+      where: {
+        id: data,
+      },
+    });
+    if(!response){
+      throw new AppError("Not able to found the resource", StatusCodes.NOT_FOUND);
     }
+    return response;
+  }
+
+  async update(id, data) {
+    const response = await this.model.update({
+      data,
+      where: {
+        id: id,
+      },
+    });
+    return response;
   }
 }
 

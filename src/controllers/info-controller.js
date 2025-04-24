@@ -5,7 +5,7 @@ const info = (req, res) => {
     success: true,
     message: "Server is running",
     error: {},
-    data: [],
+    data: {},
   });
 };
 module.exports = { info };
