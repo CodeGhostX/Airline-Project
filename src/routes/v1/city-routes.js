@@ -5,4 +5,12 @@ const router = express.Router();
 
 router.post("/", CityMiddlewares.validateCityName, CityController.createCity);
 
+router.get("/", CityController.getCities);
+
+router.get("/:id", CityController.getCity);
+
+router.delete("/:id", CityController.deleteCity);
+
+router.patch("/:id", CityController.updateCity);
+
 module.exports = router;

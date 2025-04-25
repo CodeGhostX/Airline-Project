@@ -5,6 +5,7 @@ class crudRepository {
   constructor(model) {
     this.model = model;
   }
+
   async create(data) {
     const response = await this.model.create(data);
     return response;
@@ -12,8 +13,11 @@ class crudRepository {
 
   async get(data) {
     const response = await this.model.findByPk(data);
-    if(!response){
-      throw new AppError("Not able to found the resource", StatusCodes.NOT_FOUND);
+    if (!response) {
+      throw new AppError(
+        "Not able to found the resource",
+        StatusCodes.NOT_FOUND
+      );
     }
     return response;
   }
@@ -24,25 +28,29 @@ class crudRepository {
   }
 
   async destroy(data) {
-    console.log("Data : ", data);
     const response = await this.model.destroy({
       where: {
         id: data,
       },
     });
-    if(!response){
-      throw new AppError("Not able to found the resource", StatusCodes.NOT_FOUND);
+    if (!response) {
+      throw new AppError(
+        "Not able to found the resource",
+        StatusCodes.NOT_FOUND
+      );
     }
     return response;
   }
 
   async update(id, data) {
-    const response = await this.model.update({
-      data,
+    const response = await this.model.update(data, {
       where: {
         id: id,
       },
     });
+    if (!response[0]) {
+      throw new AppError("Updation query got failed", StatusCodes.BAD_REQUEST);
+    }
     return response;
   }
 }
