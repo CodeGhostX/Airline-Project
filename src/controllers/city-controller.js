@@ -60,8 +60,7 @@ async function updateCity(req, res){
     return res.status(StatusCodes.OK).json(SuccessResponse);
   } catch (error) {
     ErrorResponse.error = error;
-    console.log("Status Code : ", error.statusCode)
-    return res.status(500).json(ErrorResponse);
+    return res.status(error.statusCode).json(ErrorResponse);
   }
 }
 
